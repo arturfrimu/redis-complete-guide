@@ -1,0 +1,27 @@
+package com.arturfrimu.redis.example1.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
+
+import static jakarta.persistence.GenerationType.IDENTITY;
+
+@NoArgsConstructor
+@Setter
+@Getter
+@Table(name = "ARTICLE")
+@Entity
+public class Article {
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
+    private String title;
+    private String text;
+    private BigDecimal rating;
+}
