@@ -24,4 +24,11 @@ public class Article {
     private String title;
     private String text;
     private BigDecimal rating;
+
+    public Article(Long id, String title, String text, BigDecimal rating) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+        this.rating = rating;
+    }
 }
