@@ -1,6 +1,7 @@
 package com.arturfrimu.redis.example1.config;
 
 import com.arturfrimu.redis.example1.entity.Article;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -16,17 +17,33 @@ import redis.clients.jedis.JedisPoolConfig;
 @EnableRedisRepositories
 public class RedisConfig {
 
+    @Value("${spring.data.redis.host}")
+    private String redisHost;
+    @Value("${spring.data.redis.port:6379}")
+    private int redisPort;
+    @Value("${spring.data.redis.maximum-active-connections-to-redis-instance:30}")
+    private int maximumActiveConnectionsToRedisInstance;
+    @Value("${spring.data.redis.number-of-connections-to-keep-in-idle-state:10}")
+    private int numberOfConnectionsToKeepInIdleState;
+    @Value("${spring.data.redis.minimum-number-of-idle-connections-in-the-pool:2}")
+    private int minimumNumberOfIdleConnectionsInThePool = 2;
+    @Value("${spring.data.redis.test-the-connection-before-borrowing-from-the-pool:true}")
+    private boolean testTheConnectionBeforeBorrowingFromThePool = true;
+    @Value("${spring.data.redis.test-the-connection-before-returning-to-the-pool:true}")
+    private boolean testTheConnectionBeforeReturningToThePool = true;
+
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
-        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-        redisStandaloneConfiguration.setHostName("localhost");
-        redisStandaloneConfiguration.setPort(6379);
-        JedisPoolConfig poolConfig = new JedisPoolConfig();
-        poolConfig.setMaxTotal(30); // Maximum active connections to Redis instance
-        poolConfig.setMaxIdle(10); // Number of connections to keep in idle state
-        poolConfig.setMinIdle(2); // Minimum number of idle connections in the pool
-        poolConfig.setTestOnBorrow(true); // Test the connection before borrowing from the pool
-        poolConfig.setTestOnReturn(true); // Test the connection before returning to the pool
+        var redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setHostName(redisHost);
+        redisStandaloneConfiguration.setPort(redisPort);
+
+        var poolConfig = new JedisPoolConfig();
+        poolConfig.setMaxTotal(maximumActiveConnectionsToRedisInstance);
+        poolConfig.setMaxIdle(numberOfConnectionsToKeepInIdleState);
+        poolConfig.setMinIdle(minimumNumberOfIdleConnectionsInThePool);
+        poolConfig.setTestOnBorrow(testTheConnectionBeforeBorrowingFromThePool);
+        poolConfig.setTestOnReturn(testTheConnectionBeforeReturningToThePool);
 
         var jedisClientConfiguration = JedisClientConfiguration.builder()
                 .usePooling()
