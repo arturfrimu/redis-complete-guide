@@ -3,11 +3,18 @@ version: '3.8'
 services:
   postgres:
     image: postgres:13
-    container_name: redis
+    container_name: redis-postgres
     environment:
       POSTGRES_DB: redis
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
     ports:
       - "5432:5432"
+    restart: always
+
+  redis:
+    image: redis:7.2.4
+    container_name: redis
+    ports:
+      - "6379:6379"
     restart: always
