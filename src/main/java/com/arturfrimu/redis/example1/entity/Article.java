@@ -7,11 +7,13 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.math.BigDecimal;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+@RedisHash("ARTICLE")
 @NoArgsConstructor
 @Setter
 @Getter
