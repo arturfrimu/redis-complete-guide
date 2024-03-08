@@ -1,5 +1,6 @@
 package com.arturfrimu.redis.example1.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -13,6 +14,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @EnableRedisRepositories
 public class RedisConfig {
+
+    @Value("${spring.data.redis.enable-transaction-support:false}")
+    private boolean enableTransactionSupport;
 
     @Bean
     public JedisConnectionFactory redisConnectionFactory() {
@@ -30,6 +34,7 @@ public class RedisConfig {
         template.setHashKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new JdkSerializationRedisSerializer());
         template.setValueSerializer(new JdkSerializationRedisSerializer());
+        template.setEnableTransactionSupport(enableTransactionSupport);
         template.afterPropertiesSet();
         return template;
     }
