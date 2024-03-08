@@ -1,6 +1,7 @@
 package com.arturfrimu.redis.example1.dao;
 
 import com.arturfrimu.redis.example1.entity.Article;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ArticleDaoRepositoryAdapterTest {
 
     @Autowired
-    private ArticleDaoRepositoryAdapter articleDaoRepositoryAdapter;
+    private ArticleDaoRepositoryAdapter redisRepository;
+
+    @BeforeEach
+    public void clearRedis() {
+        redisRepository.deleteById("1");
+        redisRepository.deleteById("2");
+        redisRepository.deleteById("3");
+    }
 
     @Test
     void testArticleDao() {
@@ -24,20 +32,20 @@ class ArticleDaoRepositoryAdapterTest {
                 new Article("3", "title 3", "content 3", BigDecimal.valueOf(30))
         );
 
-        assertThat(articleDaoRepositoryAdapter.save(articles.get(0))).isEqualTo(articles.get(0));
-        assertThat(articleDaoRepositoryAdapter.save(articles.get(1))).isEqualTo(articles.get(1));
-        assertThat(articleDaoRepositoryAdapter.save(articles.get(2))).isEqualTo(articles.get(2));
+        assertThat(redisRepository.save(articles.get(0))).isEqualTo(articles.get(0));
+        assertThat(redisRepository.save(articles.get(1))).isEqualTo(articles.get(1));
+        assertThat(redisRepository.save(articles.get(2))).isEqualTo(articles.get(2));
 
-        assertThat(articleDaoRepositoryAdapter.findAll()).containsAll(articles);
+        assertThat(redisRepository.findAll()).containsAll(articles);
 
-        assertThat(articleDaoRepositoryAdapter.findById("1")).isEqualTo(articles.get(0));
-        assertThat(articleDaoRepositoryAdapter.findById("2")).isEqualTo(articles.get(1));
-        assertThat(articleDaoRepositoryAdapter.findById("3")).isEqualTo(articles.get(2));
+        assertThat(redisRepository.findById("1")).isEqualTo(articles.get(0));
+        assertThat(redisRepository.findById("2")).isEqualTo(articles.get(1));
+        assertThat(redisRepository.findById("3")).isEqualTo(articles.get(2));
 
-        articleDaoRepositoryAdapter.deleteById("1");
-        articleDaoRepositoryAdapter.deleteById("2");
-        articleDaoRepositoryAdapter.deleteById("3");
+        redisRepository.deleteById("1");
+        redisRepository.deleteById("2");
+        redisRepository.deleteById("3");
 
-        assertThat(articleDaoRepositoryAdapter.findAll()).isEmpty();
+        assertThat(redisRepository.findAll()).isEmpty();
     }
 }

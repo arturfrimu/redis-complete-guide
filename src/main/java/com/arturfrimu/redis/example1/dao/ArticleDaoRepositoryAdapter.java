@@ -17,7 +17,7 @@ public class ArticleDaoRepositoryAdapter {
 
     public Article findById(String id) {
         return articleRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException("Article with id %s not found".formatted(id)));
     }
 
     public void deleteById(String id) {

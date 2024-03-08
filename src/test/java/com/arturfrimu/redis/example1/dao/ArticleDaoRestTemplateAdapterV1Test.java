@@ -1,6 +1,7 @@
 package com.arturfrimu.redis.example1.dao;
 
 import com.arturfrimu.redis.example1.entity.Article;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ArticleDaoRestTemplateAdapterV1Test {
 
     @Autowired
-    private ArticleDaoRestTemplateAdapterV1 articleDaoRestTemplateAdapterV1;
+    private ArticleDaoRestTemplateAdapterV1 redisRepository;
+
+    @BeforeEach
+    public void clearRedis() {
+        redisRepository.deleteById("1");
+        redisRepository.deleteById("2");
+        redisRepository.deleteById("3");
+    }
 
     @Test
     void testArticleDao() {
@@ -24,20 +32,20 @@ class ArticleDaoRestTemplateAdapterV1Test {
                 new Article("3", "title 3", "content 3", BigDecimal.valueOf(30))
         );
 
-        assertThat(articleDaoRestTemplateAdapterV1.save(articles.get(0))).isEqualTo(articles.get(0));
-        assertThat(articleDaoRestTemplateAdapterV1.save(articles.get(1))).isEqualTo(articles.get(1));
-        assertThat(articleDaoRestTemplateAdapterV1.save(articles.get(2))).isEqualTo(articles.get(2));
+        assertThat(redisRepository.save(articles.get(0))).isEqualTo(articles.get(0));
+        assertThat(redisRepository.save(articles.get(1))).isEqualTo(articles.get(1));
+        assertThat(redisRepository.save(articles.get(2))).isEqualTo(articles.get(2));
 
-        assertThat(articleDaoRestTemplateAdapterV1.findAll()).containsAll(articles);
+        assertThat(redisRepository.findAll()).containsAll(articles);
 
-        assertThat(articleDaoRestTemplateAdapterV1.findById("1")).isEqualTo(articles.get(0));
-        assertThat(articleDaoRestTemplateAdapterV1.findById("2")).isEqualTo(articles.get(1));
-        assertThat(articleDaoRestTemplateAdapterV1.findById("3")).isEqualTo(articles.get(2));
+        assertThat(redisRepository.findById("1")).isEqualTo(articles.get(0));
+        assertThat(redisRepository.findById("2")).isEqualTo(articles.get(1));
+        assertThat(redisRepository.findById("3")).isEqualTo(articles.get(2));
 
-        articleDaoRestTemplateAdapterV1.deleteById("1");
-        articleDaoRestTemplateAdapterV1.deleteById("2");
-        articleDaoRestTemplateAdapterV1.deleteById("3");
+        redisRepository.deleteById("1");
+        redisRepository.deleteById("2");
+        redisRepository.deleteById("3");
 
-        assertThat(articleDaoRestTemplateAdapterV1.findAll()).isEmpty();
+        assertThat(redisRepository.findAll()).isEmpty();
     }
 }
