@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class ArticleDao {
+public class ArticleDaoRepositoryAdapter {
 
     private final ArticleRepository articleRepository;
 
