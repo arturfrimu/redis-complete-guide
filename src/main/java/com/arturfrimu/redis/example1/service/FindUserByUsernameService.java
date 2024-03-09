@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Slf4j
 @Service
-public class UserService {
+public class FindUserByUsernameService {
 
     @Autowired
     private UserRepository userRepository;

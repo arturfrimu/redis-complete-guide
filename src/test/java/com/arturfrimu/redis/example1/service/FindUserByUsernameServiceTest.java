@@ -11,15 +11,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @SpringBootTest
-class UserServiceTest {
+class FindUserByUsernameServiceTest {
 
     @Autowired
-    private UserService userService;
+    private FindUserByUsernameService findUserByUsernameService;
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * This example ilustrate how use the redis cache WRONG
+     * This example ilustrate how use the redis cache WRONG !!!
+     * Because the totals show us that hibernate cash is faster in this case, and redis is inutil
      */
     @Test
     void testGetUserByUsername() {
@@ -28,13 +29,13 @@ class UserServiceTest {
 
         long startWithRedisCache = System.currentTimeMillis();
         for (int i = 0; i < 50; i++) {
-            assertThat(userService.getCachedWithRedisUserByUsername("admin")).isEqualTo(admin);
+            assertThat(findUserByUsernameService.getCachedWithRedisUserByUsername("admin")).isEqualTo(admin);
         }
         long endWithRedisCache = System.currentTimeMillis();
 
         long startWithHibernateCache = System.currentTimeMillis();
         for (int i = 0; i < 50; i++) {
-            assertThat(userService.getUserByUsernameUsingHibernateCache("user")).isEqualTo(user);
+            assertThat(findUserByUsernameService.getUserByUsernameUsingHibernateCache("user")).isEqualTo(user);
         }
         long endWithHibernateCache = System.currentTimeMillis();
 
