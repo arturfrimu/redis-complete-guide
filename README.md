@@ -8,6 +8,7 @@ docker-compose up
 - [Redis in 20 minutes](https://www.youtube.com/watch?v=QpBaA6B1U90)
 - [Чай, Java, покодим? Многомодульное приложение на Spring+Java+Gradle+Redis](https://www.youtube.com/watch?v=0zb54cB8SP8)
 - [Spring Boot | Spring Data Redis | Database | CRUD Example | JavaTechie](https://www.youtube.com/watch?v=oRGqCz8OLcM)
+- [Зачем нужна база данных Redis и где она используется](https://www.youtube.com/watch?v=ANPI0jtqu_I)
 
 ### Install redis on mac os
 

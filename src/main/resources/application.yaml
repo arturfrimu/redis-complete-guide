@@ -10,12 +10,12 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show-sql: true
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+#        format_sql: true
+#    show-sql: true
 
   data:
     redis:
@@ -26,3 +26,7 @@ spring:
       minimum-number-of-idle-connections-in-the-pool: 2
       test-the-connection-before-borrowing-from-the-pool: true
       test-the-connection-before-returning-to-the-pool: true
+
+logging:
+  level:
+    com.arturfrimu.redis.example1.service.UserService: INFO

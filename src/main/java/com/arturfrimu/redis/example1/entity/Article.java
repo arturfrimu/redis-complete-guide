@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -14,7 +13,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @RedisHash("ARTICLE")
-public class Article implements Serializable {
+public class Article {
     @Id
     private String id;
     private String title;

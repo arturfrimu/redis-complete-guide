@@ -1,6 +1,7 @@
 package com.arturfrimu.redis.example1.config;
 
 import com.arturfrimu.redis.example1.entity.Article;
+import com.arturfrimu.redis.example1.entity.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import redis.clients.jedis.JedisPoolConfig;
@@ -68,6 +70,20 @@ public class RedisConfig {
         template.setValueSerializer(jackson2JsonRedisSerializer);
         template.setHashValueSerializer(jackson2JsonRedisSerializer);
 
+        return template;
+    }
+
+    @Bean
+    public RedisTemplate<String, User> userRedisTemplate() {
+        RedisTemplate<String, User> template = new RedisTemplate<>();
+        template.setConnectionFactory(jedisConnectionFactory());
+        // Use StringRedisSerializer for the keys
+        template.setKeySerializer(new StringRedisSerializer());
+        // Use Jackson2JsonRedisSerializer or GenericJackson2JsonRedisSerializer for the values
+        template.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        // Also set the serializer for hash keys and values, if you plan to use hash operations
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
         return template;
     }
 }
