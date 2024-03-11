@@ -2,6 +2,7 @@ package com.arturfrimu.redis.example1.service;
 
 import com.arturfrimu.redis.example1.entity.User;
 import com.arturfrimu.redis.example1.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,12 @@ class RecentUsersByUsernameServiceTest {
     private RecentUsersByUsernameService recentUsersByUsernameService;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+    private ListOperations<String, String> listOps;
+
+    @PostConstruct
+    void setOptions() {
+        listOps = redisTemplate.opsForList();
+    }
 
     @BeforeEach
     void clear() {
@@ -45,7 +52,6 @@ class RecentUsersByUsernameServiceTest {
         }
 
         log.info("\n\nThe 10 most recent users retrieved from database\n\n");
-        ListOperations<String, String> listOps = redisTemplate.opsForList();
         String recentUsersKey = "recent:users";
 
         List<String> range = listOps.range(recentUsersKey, 0, -1);
